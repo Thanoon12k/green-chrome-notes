@@ -58,32 +58,25 @@ async function handleMessage(msg, sender) {
 
 /* ---------- Core Capture Flow ---------- */
 async function processCapture({ type, content, imageUrl, linkUrl, url, title, tabId }) {
+  console.log('[AI Notes SW] processCapture called:', { type, url, title, tabId });
   const settings = await Storage.getSettings();
-  const groups = await Storage.getGroups();
+  const groups   = await Storage.getGroups();
+  console.log('[AI Notes SW] API key set?', !!settings.groqApiKey, '| confirmTags:', settings.confirmTags);
 
-  // Build the draft note
   const noteId = 'note_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
   const draft = {
-    id: noteId,
-    type,
-    content: content || '',
-    imageUrl: imageUrl || null,
-    linkUrl: linkUrl || null,
-    url,
-    pageTitle: title,
-    caption: '',
-    tags: [],
-    group: groups[0]?.name || 'Research',
-    subgroup: '',
-    label: '',
-    createdAt: Date.now(),
-    updatedAt: Date.now()
+    id: noteId, type, content: content || '',
+    imageUrl: imageUrl || null, linkUrl: linkUrl || null,
+    url, pageTitle: title,
+    caption: '', tags: [], group: groups[0]?.name || 'Research',
+    subgroup: '', label: '', createdAt: Date.now(), updatedAt: Date.now()
   };
 
-  // Call Groq for AI analysis
+  // --- Step 1: AI analysis ---
   let aiResult = { caption: '', tags: [], group: draft.group };
   if (settings.autoCaption || settings.autoTag) {
     try {
+      console.log('[AI Notes SW] Calling Groq API...');
       aiResult = await GroqAPI.analyzeNote({
         content: content || linkUrl || imageUrl || url,
         url, pageTitle: title, type,
@@ -91,30 +84,34 @@ async function processCapture({ type, content, imageUrl, linkUrl, url, title, ta
         model: settings.model,
         existingGroups: groups
       });
+      console.log('[AI Notes SW] Groq result:', aiResult);
     } catch (err) {
-      console.warn('Groq error:', err.message);
+      console.warn('[AI Notes SW] Groq failed (continuing without AI):', err.message);
     }
   }
 
   draft.caption = aiResult.caption || '';
-  draft.tags    = aiResult.tags || [];
-  draft.group   = aiResult.group || draft.group;
+  draft.tags    = aiResult.tags   || [];
+  draft.group   = aiResult.group  || draft.group;
 
+  // --- Step 2: ALWAYS save immediately — note is never lost ---
+  await Storage.saveNote(draft);
+  console.log('[AI Notes SW] Note saved to storage:', draft.id);
+  showNotification('✅ Note saved!', draft.caption || 'Saved from ' + (title || url));
+
+  // --- Step 3: Show overlay to allow optional tag editing ---
   if (settings.confirmTags && tabId) {
-    // Send to content script for tag confirmation overlay
     try {
       await chrome.scripting.executeScript({ target: { tabId }, files: ['content/content.js'] });
-    } catch {}
-    try {
-      await chrome.tabs.sendMessage(tabId, { action: 'showTagConfirm', draft });
-    } catch (err) {
-      // Fallback: save directly if content script fails
-      await Storage.saveNote(draft);
-      showNotification('Note saved!', draft.caption || 'Note captured from ' + title);
+    } catch (e) {
+      console.warn('[AI Notes SW] executeScript skipped:', e.message);
     }
-  } else {
-    await Storage.saveNote(draft);
-    showNotification('Note saved!', draft.caption || 'Note captured from ' + title);
+    try {
+      await chrome.tabs.sendMessage(tabId, { action: 'showTagEdit', draft });
+      console.log('[AI Notes SW] Tag-edit overlay sent OK');
+    } catch (err) {
+      console.warn('[AI Notes SW] Could not show tag overlay (note already saved):', err.message);
+    }
   }
 
   return { success: true };

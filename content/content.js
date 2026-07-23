@@ -11,7 +11,9 @@
   let pendingDraft = null;
 
   chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    console.log('[AI Notes] content.js received message:', msg.action);
     if (msg.action === 'showTagConfirm') {
+      console.log('[AI Notes] Showing tag confirm overlay for draft:', msg.draft?.id);
       showTagConfirmOverlay(msg.draft);
       sendResponse({ ok: true });
     }
@@ -103,23 +105,37 @@
 
   // Save directly to chrome.storage.local — avoids the sleeping MV3 service worker bug
   async function acceptNote() {
-    if (!pendingDraft) return;
+    console.log('[AI Notes] acceptNote() called. pendingDraft:', pendingDraft);
+    if (!pendingDraft) {
+      console.warn('[AI Notes] acceptNote: pendingDraft is null — nothing to save!');
+      return;
+    }
 
     const activeTags = [];
     overlayEl?.querySelectorAll('.__ainotes_tag_chip:not(.__ainotes_tag_off)').forEach(c => {
       activeTags.push(c.dataset.tag);
     });
+    console.log('[AI Notes] Active tags collected:', activeTags);
 
     const finalNote = { ...pendingDraft, tags: activeTags, updatedAt: Date.now() };
+    console.log('[AI Notes] Final note to save:', finalNote);
 
     try {
+      console.log('[AI Notes] Reading chrome.storage.local...');
       const result = await chrome.storage.local.get('ainotes_notes');
-      const notes  = result['ainotes_notes'] || [];
+      console.log('[AI Notes] Current notes in storage:', (result['ainotes_notes'] || []).length);
+
+      const notes = result['ainotes_notes'] || [];
       notes.unshift(finalNote);
+
+      console.log('[AI Notes] Writing to storage, total notes will be:', notes.length);
       await chrome.storage.local.set({ 'ainotes_notes': notes });
+
+      console.log('[AI Notes] ✅ Save successful!');
       removeOverlay();
       showSavedToast();
     } catch (err) {
+      console.error('[AI Notes] ❌ Save FAILED:', err.message, err);
       showErrorToast('Save failed: ' + err.message);
     }
   }
