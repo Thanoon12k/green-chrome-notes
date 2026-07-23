@@ -1,0 +1,234 @@
+/* =========================================================
+   AI Notes — Content Script Styles
+   The tag-confirmation overlay injected into pages
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+#__ainotes_overlay {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2147483647;
+  width: 360px;
+  opacity: 0;
+  transform: translateX(380px);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+#__ainotes_overlay.__ainotes_visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.__ainotes_panel {
+  background: linear-gradient(145deg, #132118, #1B3020);
+  border: 1px solid rgba(200, 169, 110, 0.3);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,169,110,0.1);
+  backdrop-filter: blur(20px);
+}
+
+.__ainotes_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.__ainotes_logo {
+  font-size: 14px;
+  font-weight: 700;
+  color: #C8A96E;
+  letter-spacing: 0.5px;
+}
+
+.__ainotes_close {
+  background: rgba(255,255,255,0.07);
+  border: none;
+  color: #A89B7A;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.__ainotes_close:hover { background: rgba(255,80,80,0.2); color: #ff6b6b; }
+
+.__ainotes_type_badge {
+  display: inline-block;
+  background: rgba(74, 124, 89, 0.25);
+  border: 1px solid rgba(74, 124, 89, 0.4);
+  color: #6BAF7A;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.__ainotes_source {
+  font-size: 11px;
+  color: #7A6E55;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.__ainotes_caption {
+  font-size: 13px;
+  color: #E2C78A;
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: rgba(200, 169, 110, 0.08);
+  border-left: 3px solid #C8A96E;
+  border-radius: 0 8px 8px 0;
+}
+
+.__ainotes_preview {
+  font-size: 12px;
+  color: #B8A882;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  max-height: 72px;
+  overflow: hidden;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.__ainotes_thumb_wrap {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  max-height: 120px;
+}
+.__ainotes_thumb { width: 100%; object-fit: cover; display: block; }
+
+.__ainotes_section_label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #7A6E55;
+  margin: 10px 0 6px;
+}
+
+.__ainotes_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.__ainotes_tag_chip {
+  background: rgba(74, 124, 89, 0.2);
+  border: 1px solid rgba(74, 124, 89, 0.5);
+  color: #6BAF7A;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.__ainotes_tag_chip:hover { background: rgba(74, 124, 89, 0.35); }
+.__ainotes_tag_chip.__ainotes_tag_off {
+  background: rgba(100,100,100,0.1);
+  border-color: rgba(100,100,100,0.2);
+  color: #555;
+  text-decoration: line-through;
+}
+
+.__ainotes_add_tag_row { margin-bottom: 10px; }
+.__ainotes_tag_input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(200, 169, 110, 0.2);
+  border-radius: 8px;
+  color: #F0E8D5;
+  font-size: 12px;
+  padding: 6px 10px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+.__ainotes_tag_input:focus { border-color: rgba(200, 169, 110, 0.5); }
+.__ainotes_tag_input::placeholder { color: #5A5040; }
+
+.__ainotes_group_badge {
+  display: inline-block;
+  background: rgba(139, 90, 43, 0.2);
+  border: 1px solid rgba(139, 90, 43, 0.4);
+  color: #C8A96E;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.__ainotes_actions {
+  display: flex;
+  gap: 8px;
+}
+
+.__ainotes_btn {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.__ainotes_btn_primary {
+  background: linear-gradient(135deg, #4A7C59, #3D6B47);
+  color: #F0E8D5;
+  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.4);
+}
+.__ainotes_btn_primary:hover { background: linear-gradient(135deg, #5A9C6A, #4A7C59); transform: translateY(-1px); }
+.__ainotes_btn_ghost {
+  background: rgba(255,255,255,0.06);
+  color: #A89B7A;
+  border: 1px solid rgba(200, 169, 110, 0.15);
+}
+.__ainotes_btn_ghost:hover { background: rgba(255,80,80,0.1); color: #ff8a80; }
+
+/* Toast */
+#__ainotes_toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2147483647;
+  background: linear-gradient(135deg, #1B3020, #264530);
+  border: 1px solid rgba(74, 124, 89, 0.5);
+  color: #6BAF7A;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transform: translateY(60px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+#__ainotes_toast.__ainotes_toast_show { transform: translateY(0); opacity: 1; }

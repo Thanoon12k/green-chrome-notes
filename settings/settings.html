@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>AI Notes — Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="settings.css"/>
+</head>
+<body>
+<div id="settings-app">
+
+  <header class="set-header">
+    <span class="set-logo">🌿 AI Notes</span>
+    <span class="set-subtitle">Settings</span>
+  </header>
+
+  <div class="set-card">
+    <div class="set-section-title">🔑 Groq API Key</div>
+    <p class="set-hint">Get your free key at <a href="https://console.groq.com/keys" target="_blank" class="set-link">console.groq.com/keys</a></p>
+    <div class="set-input-wrap">
+      <input id="api-key-input" type="password" class="set-input" placeholder="gsk_…"/>
+      <button id="toggle-key" class="set-eye-btn" title="Show/hide">👁</button>
+    </div>
+    <div id="key-status" class="set-key-status hidden"></div>
+  </div>
+
+  <div class="set-card">
+    <div class="set-section-title">🤖 AI Model</div>
+    <select id="model-select" class="set-select">
+      <option value="llama-3.1-8b-instant">llama-3.1-8b-instant — Fast (recommended)</option>
+      <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile — More powerful</option>
+      <option value="llama-3.1-70b-versatile">llama-3.1-70b-versatile — Balanced</option>
+      <option value="gemma2-9b-it">gemma2-9b-it — Compact</option>
+    </select>
+  </div>
+
+  <div class="set-card">
+    <div class="set-section-title">⚙️ Behaviour</div>
+    <label class="set-toggle-row">
+      <span class="set-toggle-label">
+        <strong>Auto Caption</strong>
+        <span class="set-toggle-desc">AI generates a summary for every note</span>
+      </span>
+      <input type="checkbox" id="auto-caption" class="set-toggle"/>
+      <span class="set-toggle-track"></span>
+    </label>
+    <label class="set-toggle-row">
+      <span class="set-toggle-label">
+        <strong>Auto Tag</strong>
+        <span class="set-toggle-desc">AI suggests tags automatically</span>
+      </span>
+      <input type="checkbox" id="auto-tag" class="set-toggle"/>
+      <span class="set-toggle-track"></span>
+    </label>
+    <label class="set-toggle-row">
+      <span class="set-toggle-label">
+        <strong>Confirm Tags</strong>
+        <span class="set-toggle-desc">Show overlay to review tags before saving</span>
+      </span>
+      <input type="checkbox" id="confirm-tags" class="set-toggle"/>
+      <span class="set-toggle-track"></span>
+    </label>
+  </div>
+
+  <div class="set-card">
+    <div class="set-section-title">🧪 API Test</div>
+    <button id="test-api-btn" class="set-test-btn">Test Groq Connection</button>
+    <div id="test-result" class="set-test-result hidden"></div>
+  </div>
+
+  <div class="set-card set-danger-card">
+    <div class="set-section-title">⚠️ Data</div>
+    <div class="set-danger-row">
+      <span class="set-danger-text">Export all notes as Markdown</span>
+      <button id="export-all-btn" class="set-btn-outline">⬇ Export</button>
+    </div>
+    <div class="set-danger-row">
+      <span class="set-danger-text">Delete ALL notes permanently</span>
+      <button id="clear-all-btn" class="set-btn-danger">🗑 Clear All</button>
+    </div>
+  </div>
+
+  <div class="set-footer">
+    <button id="save-settings-btn" class="set-save-btn">💾 Save Settings</button>
+    <div id="save-status" class="set-save-status hidden"></div>
+  </div>
+
+</div>
+<script src="../utils/helpers.js"></script>
+<script src="../utils/storage.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>

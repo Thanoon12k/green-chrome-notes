@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>AI Notes Sidebar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="sidebar.css"/>
+</head>
+<body>
+<div id="sidebar-app">
+
+  <header class="sb-header">
+    <span class="sb-logo">🌿 AI Notes</span>
+    <div class="sb-header-actions">
+      <button id="sb-dashboard-btn" class="sb-icon-btn" title="Full Board">⊞</button>
+      <button id="sb-settings-btn"  class="sb-icon-btn" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="sb-search-wrap">
+    <input id="sb-search" class="sb-search" placeholder="🔍 Search notes…"/>
+  </div>
+
+  <!-- Filter tabs by group -->
+  <div class="sb-filter-tabs" id="sb-filter-tabs">
+    <button class="sb-filter-tab active" data-group="">All</button>
+  </div>
+
+  <!-- Quick capture bar -->
+  <div class="sb-capture-bar">
+    <textarea id="sb-note-input" class="sb-textarea" placeholder="Quick note… (/ for group)" rows="2"></textarea>
+    <div class="sb-capture-actions">
+      <select id="sb-group-sel" class="sb-mini-select"></select>
+      <button id="sb-save-btn" class="sb-save-btn">✨ Save</button>
+      <button id="sb-shot-btn" class="sb-shot-btn" title="Screenshot">📸</button>
+    </div>
+  </div>
+
+  <!-- Notes list -->
+  <div id="sb-notes" class="sb-notes-list"></div>
+
+  <!-- Export all -->
+  <div class="sb-footer">
+    <button id="sb-export-md" class="sb-footer-btn">⬇ Export All as Markdown</button>
+    <span id="sb-count" class="sb-count">0 notes</span>
+  </div>
+</div>
+
+<script src="../utils/helpers.js"></script>
+<script src="../utils/storage.js"></script>
+<script src="sidebar.js"></script>
+</body>
+</html>

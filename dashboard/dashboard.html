@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>AI Notes — Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="dashboard.css"/>
+</head>
+<body>
+<div id="dash-app">
+
+  <!-- Top Bar -->
+  <header class="dash-header">
+    <div class="dash-header-left">
+      <span class="dash-logo">🌿</span>
+      <span class="dash-title">AI Notes Board</span>
+    </div>
+    <div class="dash-header-center">
+      <div class="dash-search-wrap">
+        <span>🔍</span>
+        <input id="dash-search" class="dash-search" placeholder="Search all notes…"/>
+        <button id="dash-clear-search" class="dash-clear hidden">✕</button>
+      </div>
+    </div>
+    <div class="dash-header-right">
+      <button id="dash-export-md" class="dash-btn dash-btn-ghost">⬇ Export MD</button>
+      <button id="dash-add-group" class="dash-btn dash-btn-primary">＋ Group</button>
+      <button id="dash-settings"  class="dash-btn dash-btn-ghost">⚙</button>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="dash-stats" id="dash-stats"></div>
+
+  <!-- Board -->
+  <div class="dash-board" id="dash-board">
+    <div class="dash-loading" id="dash-loading">
+      <div class="dash-loading-spinner"></div>
+      <span>Loading your notes…</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Group Modal -->
+<div id="group-modal" class="modal-overlay hidden">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <span>📂 New Group</span>
+      <button id="modal-close" class="modal-close">✕</button>
+    </div>
+    <input id="modal-group-name"  class="modal-input" placeholder="Group name…"/>
+    <input id="modal-group-emoji" class="modal-input" placeholder="Emoji (optional, e.g. 🚀)"/>
+    <div class="modal-colors" id="modal-colors"></div>
+    <button id="modal-save" class="dash-btn dash-btn-primary" style="width:100%;margin-top:12px">Create Group</button>
+  </div>
+</div>
+
+<!-- Note Detail Modal -->
+<div id="note-modal" class="modal-overlay hidden">
+  <div class="modal-panel modal-wide">
+    <div class="modal-header">
+      <span id="note-modal-title">Note</span>
+      <div style="display:flex;gap:6px">
+        <button id="note-modal-md"    class="dash-btn dash-btn-ghost" style="font-size:12px">⬇ MD</button>
+        <button id="note-modal-close" class="modal-close">✕</button>
+      </div>
+    </div>
+    <div id="note-modal-body"></div>
+  </div>
+</div>
+
+<script src="../utils/helpers.js"></script>
+<script src="../utils/storage.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

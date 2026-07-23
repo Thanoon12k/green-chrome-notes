@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Notes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="popup.css"/>
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <span class="logo">🌿</span>
+      <span class="logo-text">AI Notes</span>
+    </div>
+    <div class="header-actions">
+      <button id="btn-sidebar"   class="icon-btn" title="Open Sidebar">◧</button>
+      <button id="btn-dashboard" class="icon-btn" title="Open Board">⊞</button>
+      <button id="btn-settings"  class="icon-btn" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <!-- Capture Form -->
+  <div class="capture-card">
+    <div class="capture-type-tabs">
+      <button class="type-tab active" data-type="text">📝 Text</button>
+      <button class="type-tab" data-type="screenshot">📸 Shot</button>
+      <button class="type-tab" data-type="link">🔗 Link</button>
+    </div>
+
+    <div id="text-input-area">
+      <textarea id="note-input" placeholder="Type a note… or select text on the page and right-click → Save to AI Notes" rows="3"></textarea>
+    </div>
+
+    <div id="screenshot-area" class="hidden">
+      <div class="screenshot-hint">📸 Captures the current visible tab</div>
+    </div>
+
+    <div id="link-input-area" class="hidden">
+      <input id="link-input" type="url" placeholder="Paste a URL…"/>
+    </div>
+
+    <!-- Group / Tag quick-assign with "/" command -->
+    <div class="meta-row">
+      <div class="group-select-wrap">
+        <select id="group-select" class="group-select">
+          <option value="">📂 Group…</option>
+        </select>
+      </div>
+      <input id="tag-quick" class="tag-quick-input" placeholder="# tag (press Enter)"/>
+    </div>
+    <div id="quick-tags" class="quick-tags"></div>
+
+    <button id="btn-save" class="save-btn">
+      <span id="save-label">✨ Save with AI</span>
+      <span id="save-spinner" class="spinner hidden">◌</span>
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="search-input" class="search-input" placeholder="Search notes…"/>
+    <button id="clear-search" class="clear-btn hidden">✕</button>
+  </div>
+
+  <!-- Recent Notes Feed -->
+  <div class="notes-section">
+    <div class="notes-header">
+      <span id="notes-label">Recent Notes</span>
+      <span id="notes-count" class="badge">0</span>
+    </div>
+    <div id="notes-list" class="notes-list">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🌿</div>
+        <div class="empty-text">No notes yet.<br/>Capture something from the web!</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="../utils/helpers.js"></script>
+<script src="../utils/storage.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
