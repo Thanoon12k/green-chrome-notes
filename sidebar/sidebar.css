@@ -1,7 +1,7 @@
 /* =========================================================
    AI Notes — Sidebar Styles
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Font loaded via <link> in sidebar.html */
 
 :root {
   --bg-primary:    #132118;

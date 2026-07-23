@@ -101,22 +101,27 @@
 </div>`;
   }
 
-  function acceptNote() {
+  // Save directly to chrome.storage.local — avoids the sleeping MV3 service worker bug
+  async function acceptNote() {
     if (!pendingDraft) return;
-    // Collect active tags
+
     const activeTags = [];
     overlayEl?.querySelectorAll('.__ainotes_tag_chip:not(.__ainotes_tag_off)').forEach(c => {
       activeTags.push(c.dataset.tag);
     });
-    // Add any custom tags not already in list
-    overlayEl?.querySelectorAll('.__ainotes_tag_chip.__ainotes_custom:not(.__ainotes_tag_off)').forEach(c => {
-      if (!activeTags.includes(c.dataset.tag)) activeTags.push(c.dataset.tag);
-    });
 
-    const finalNote = { ...pendingDraft, tags: activeTags };
-    chrome.runtime.sendMessage({ action: 'confirmAndSaveNote', noteData: finalNote });
-    removeOverlay();
-    showSavedToast();
+    const finalNote = { ...pendingDraft, tags: activeTags, updatedAt: Date.now() };
+
+    try {
+      const result = await chrome.storage.local.get('ainotes_notes');
+      const notes  = result['ainotes_notes'] || [];
+      notes.unshift(finalNote);
+      await chrome.storage.local.set({ 'ainotes_notes': notes });
+      removeOverlay();
+      showSavedToast();
+    } catch (err) {
+      showErrorToast('Save failed: ' + err.message);
+    }
   }
 
   function addCustomTag(tag) {
@@ -139,6 +144,16 @@
     document.body.appendChild(toast);
     requestAnimationFrame(() => toast.classList.add('__ainotes_toast_show'));
     setTimeout(() => { toast.classList.remove('__ainotes_toast_show'); setTimeout(() => toast.remove(), 400); }, 2500);
+  }
+
+  function showErrorToast(msg) {
+    const toast = document.createElement('div');
+    toast.id = '__ainotes_toast';
+    toast.style.cssText = 'background:rgba(180,40,40,0.95)!important;border-color:#ff6b6b!important;color:#fff!important;';
+    toast.textContent = '❌ ' + msg;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('__ainotes_toast_show'));
+    setTimeout(() => { toast.classList.remove('__ainotes_toast_show'); setTimeout(() => toast.remove(), 400); }, 4000);
   }
 
   function removeOverlay() {

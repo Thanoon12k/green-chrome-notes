@@ -161,8 +161,8 @@ async function openSidePanel(tabId) {
 function showNotification(title, message) {
   chrome.notifications.create({
     type: 'basic',
-    iconUrl: '../icons/icon48.png',
+    iconUrl: chrome.runtime.getURL('icons/icon48.png'),
     title,
-    message: message.slice(0, 100)
+    message: (message || '').slice(0, 100)
   });
 }
