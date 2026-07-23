@@ -98,7 +98,7 @@ function bindEvents() {
     window.close();
   });
   $('btn-dashboard').addEventListener('click', () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL('../dashboard/dashboard.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL('dashboard/dashboard.html') });
     window.close();
   });
   $('btn-settings').addEventListener('click', () => {
@@ -194,12 +194,11 @@ function renderNotes(notes) {
 
   if (!notes.length) {
     list.innerHTML = '';
-    list.appendChild(empty);
-    empty.classList.remove('hidden');
+    if (empty) empty.classList.remove('hidden');
     return;
   }
-  empty.classList.add('hidden');
 
+  if (empty) empty.classList.add('hidden');
   list.innerHTML = notes.slice(0, 30).map(n => noteCardHTML(n)).join('');
 
   // Bind delete / md export
